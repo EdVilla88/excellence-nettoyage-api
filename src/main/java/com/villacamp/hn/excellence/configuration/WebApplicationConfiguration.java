@@ -28,11 +28,10 @@ public class WebApplicationConfiguration implements WebMvcConfigurer {
         registry.addViewController("/notFound").setViewName("redirect:" + redirectURL);
     }
 
+    //Todo fix redirecting not working
     @Bean
     public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> containerCustomizer() {
-        return container -> {
-            container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/notFound"));
-        };
+        return container -> container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/notFound"));
     }
 
     @Bean

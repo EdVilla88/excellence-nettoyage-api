@@ -1,15 +1,15 @@
 package com.villacamp.hn.excellence.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import lombok.*;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignInDTO {
+    @Email
     private String email;
+    @NonNull
     private String password;
 }

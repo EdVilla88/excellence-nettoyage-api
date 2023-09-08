@@ -8,11 +8,14 @@ import com.villacamp.hn.excellence.repository.UserRepository;
 import com.villacamp.hn.excellence.service.AuthenticationService;
 import com.villacamp.hn.excellence.service.JwtService;
 import com.villacamp.hn.excellence.utils.enums.Role;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +27,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     @Override
+    @Transactional
     public JwtAuthenticationDTO signUp(SignUpDTO request) {
         var user = User.builder()
-                .email(request.getEmail())
                 .name(request.getFullName())
-                .role(Role.USER)
-                .build();
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .phoneNumber(request.getPhone())
+                .created(LocalDateTime.now())
+                .role(Role.USER).build();
         userRepository.save(user);
 
         return JwtAuthenticationDTO.builder()
@@ -46,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
         var user = userRepository.findUserByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
-        
+
         return JwtAuthenticationDTO.builder()
                 .token(jwtService.generateToken(user))
                 .build();
