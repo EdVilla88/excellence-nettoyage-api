@@ -3,7 +3,6 @@ package com.villacamp.hn.excellence.configuration;
 import com.villacamp.hn.excellence.filter.JwtAuthenticationFilter;
 import com.villacamp.hn.excellence.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,27 +22,24 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration {
+public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
-    @Value("${springdoc.swagger-ui.path}")
-    private String swagger;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(handlingConfigurer -> handlingConfigurer.accessDeniedPage("/notFound"))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
                                 "/api/v1/auth/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/notFound",
-                                swagger)
+                                "/notFound")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
-                .exceptionHandling(handlingConfigurer -> handlingConfigurer.accessDeniedPage("/notFound"))//Todo fix redirecting not working
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
