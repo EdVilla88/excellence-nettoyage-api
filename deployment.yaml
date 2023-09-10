@@ -2,16 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: excellence-api
+    app: excellence-nettoyage-api #application name
     version: v0.0.1
-  name: excellence-nettoyage-api
+  name: excellence-nettoyage-api #pod's name
   namespace: default
 spec:
-  replicas: 1
+  replicas: 1 #number of pods
   minReadySeconds: 45 #give thc container to wait 45 seconds to get ready
   selector:
     matchLabels:
-      app: excellence-api
+      app: excellence-nettoyage-api
       version: v0.0.1
   strategy:
     rollingUpdate:
@@ -21,34 +21,34 @@ spec:
   template:
     metadata:
       labels:
-        app: excellence-api
+        app: excellence-nettoyage-api
         version: v0.0.1
     spec:
       containers:
-        - image: edvilla/excellence-api:v0.0.1
+        - image: edvilla/excellence-api:v0.0.6
           imagePullPolicy: IfNotPresent
           name: excellence-nettoyage-api
           env:
             - name: POSTGRES_URL
               valueFrom:
-                    configMapKeyRef:
-                      key: POSTGRES_URL
-                      name: excellence-nettoyage-api-config-map
+                secretKeyRef:
+                  key: POSTGRES_URL
+                  name: excellence-nettoyage-secret
             - name: POSTGRES_USERNAME
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   key: POSTGRES_USERNAME
-                  name: excellence-nettoyage-api-config-map
+                  name: excellence-nettoyage-secret
             - name: POSTGRES_PASSWORD
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   key: POSTGRES_PASSWORD
-                  name: excellence-nettoyage-api-config-map
+                  name: excellence-nettoyage-secret
             - name: JWT_SECRET
               valueFrom:
-                configMapKeyRef:
+                secretKeyRef:
                   key: JWT_SECRET
-                  name: excellence-nettoyage-api-config-map
+                  name: excellence-nettoyage-secret
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
 ---
@@ -56,15 +56,15 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: excellence-api
+    app: excellence-nettoyage-api
   name: excellence-nettoyage-api
   namespace: default
 spec:
   ports:
-    - port: 8080
+    - port: 8000 #external port
       protocol: TCP
-      targetPort: 8080
+      targetPort: 8080 #api port
   selector:
-    app: excellence-api
+    app: excellence-nettoyage-api
   sessionAffinity: None
   type: LoadBalancer
