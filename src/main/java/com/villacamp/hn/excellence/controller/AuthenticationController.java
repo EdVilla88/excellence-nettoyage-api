@@ -5,6 +5,8 @@ import com.villacamp.hn.excellence.dto.request.SignUpDTO;
 import com.villacamp.hn.excellence.dto.response.JwtAuthenticationDTO;
 import com.villacamp.hn.excellence.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "api/v1/auth")
 @RequiredArgsConstructor
+@SecurityRequirements({@SecurityRequirement(name = "api-key")})
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;

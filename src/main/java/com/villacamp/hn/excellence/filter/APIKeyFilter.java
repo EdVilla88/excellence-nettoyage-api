@@ -23,14 +23,10 @@ public class APIKeyFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String apiKey = request.getHeader("api-key");
-        if (Objects.nonNull(apiKey) && isValid(apiKey)) {
-
-        } else {
+        if (Objects.nonNull(apiKey) && isValid(apiKey))
+            filterChain.doFilter(request, response);
+        else
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
-        filterChain.doFilter(request, response);
     }
 
     private boolean isValid(String apiKey) {

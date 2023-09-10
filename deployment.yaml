@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: excellence-nettoyage-api #application name
-    version: v0.0.1
+    version: v0.0.7
   name: excellence-nettoyage-api #pod's name
   namespace: default
 spec:
@@ -12,7 +12,7 @@ spec:
   selector:
     matchLabels:
       app: excellence-nettoyage-api
-      version: v0.0.1
+      version: v0.0.7
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -22,11 +22,11 @@ spec:
     metadata:
       labels:
         app: excellence-nettoyage-api
-        version: v0.0.1
+        version: v0.0.7
     spec:
       containers:
-        - image: edvilla/excellence-api:v0.0.6
-          imagePullPolicy: IfNotPresent
+        - image: edvilla/excellence-api:v0.0.7
+          imagePullPolicy: Always
           name: excellence-nettoyage-api
           env:
             - name: POSTGRES_URL
@@ -49,6 +49,16 @@ spec:
                 secretKeyRef:
                   key: JWT_SECRET
                   name: excellence-nettoyage-secret
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: API_KEY
+                  name: excellence-nettoyage-secret
+      #            - name: SSL_PASSWORD
+      #              valueFrom:
+      #                secretKeyRef:
+      #                  key: SSL_PASSWORD
+      #                  name: excellence-nettoyage-secret
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
 ---
@@ -68,3 +78,4 @@ spec:
     app: excellence-nettoyage-api
   sessionAffinity: None
   type: LoadBalancer
+#  type: NodePort
