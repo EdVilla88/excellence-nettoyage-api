@@ -1,0 +1,5 @@
+FROM openjdk:17
+COPY ./target/excellence-0.0.6.jar /usr/src/excellence/
+EXPOSE 8080
+WORKDIR /usr/src/excellence/
+CMD ["java","-Dspring.profiles.active=prd", "-jar", "excellence-0.0.6.jar"]
