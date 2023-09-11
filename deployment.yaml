@@ -54,11 +54,6 @@ spec:
                 secretKeyRef:
                   key: API_KEY
                   name: excellence-nettoyage-secret
-      #            - name: SSL_PASSWORD
-      #              valueFrom:
-      #                secretKeyRef:
-      #                  key: SSL_PASSWORD
-      #                  name: excellence-nettoyage-secret
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
 ---
@@ -77,5 +72,4 @@ spec:
   selector:
     app: excellence-nettoyage-api
   sessionAffinity: None
-  type: LoadBalancer
-#  type: NodePort
+  type: NodePort
