@@ -54,6 +54,12 @@ spec:
                 secretKeyRef:
                   key: API_KEY
                   name: excellence-nettoyage-secret
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /api/actuator/health
+            initialDelaySeconds: 15
+            periodSeconds: 30
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
 ---
