@@ -23,7 +23,8 @@ public class APIKeyFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         String apiKey = request.getHeader("api-key");
-        if (Objects.nonNull(apiKey) && isValid(apiKey))
+        if (Objects.nonNull(apiKey) && isValid(apiKey) ||
+                request.getRequestURI().contains("/actuator/health"))
             filterChain.doFilter(request, response);
         else
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
