@@ -3,6 +3,7 @@ package com.villacamp.hn.excellence.configuration;
 import com.villacamp.hn.excellence.filter.JwtAuthenticationFilter;
 import com.villacamp.hn.excellence.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,17 +27,19 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .exceptionHandling(handlingConfigurer -> handlingConfigurer.accessDeniedPage("/notFound"))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
-                                "/api/v1/auth/**",
+                                contextPath,
+                                "/v1/auth/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/notFound")
+                                "/actuator/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
