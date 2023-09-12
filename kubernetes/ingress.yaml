@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ena-ingress
+  namespace: default
+  annotations:
+    #gcloud compute addresses create excellence-api-ip --global
+    #gcloud compute addresses list
+    kubernetes.io/ingress.global-static-ip-name: excellence-api-ip
+#    nginx.ingress.kubernetes.io/rewrite-target: / #this only works with Nginx controller not GKE Ingress
+spec:
+  #  tls:
+  #    #      - hosts:
+  #    #          - placeholder.com # Wildcard host captures all hosts, so I can call it via IP
+  #    - secretName: en-tls-secret # Reference the secret containing your .crt and .key files
+
+  rules:
+    #    - host: placeholder.com #Replace with your desired hostname when we have one
+    - http:
+        paths:
+          - path: /excellence-nettoyage/api/
+            pathType: Prefix
+            backend:
+              service:
+                name: ena-service
+                port:
+                  number: 8000
+#  ingressClassName: gke #specify loadbalancer type controller
