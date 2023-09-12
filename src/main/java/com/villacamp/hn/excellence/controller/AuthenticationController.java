@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/v1/auth")
+@RequestMapping(path = "v1/auth")
 @RequiredArgsConstructor
 @SecurityRequirements({@SecurityRequirement(name = "api-key")})
 public class AuthenticationController {

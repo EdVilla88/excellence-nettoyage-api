@@ -4,7 +4,7 @@ metadata:
   labels:
     app: excellence-nettoyage-api #application name
     version: v0.0.7
-  name: excellence-nettoyage-api #pod's name
+  name: ena-deployment #pod's name
   namespace: default
 spec:
   replicas: 1 #number of pods
@@ -27,39 +27,45 @@ spec:
       containers:
         - image: edvilla/excellence-api:v0.0.7
           imagePullPolicy: Always
-          name: excellence-nettoyage-api
+          name: excellence-api-image
           env:
             - name: POSTGRES_URL
               valueFrom:
                 secretKeyRef:
                   key: POSTGRES_URL
-                  name: excellence-nettoyage-secret
+                  name: ena-secret
             - name: POSTGRES_USERNAME
               valueFrom:
                 secretKeyRef:
                   key: POSTGRES_USERNAME
-                  name: excellence-nettoyage-secret
+                  name: ena-secret
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   key: POSTGRES_PASSWORD
-                  name: excellence-nettoyage-secret
+                  name: ena-secret
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
                   key: JWT_SECRET
-                  name: excellence-nettoyage-secret
+                  name: ena-secret
             - name: API_KEY
               valueFrom:
                 secretKeyRef:
                   key: API_KEY
-                  name: excellence-nettoyage-secret
-          livenessProbe:
-            httpGet:
-              port: 8080
-              path: /api/actuator/health
-            initialDelaySeconds: 15
-            periodSeconds: 30
+                  name: ena-secret
+      #          livenessProbe:
+      #            httpGet:
+      #              port: 8080
+      #              path: /excellence-nettoyage/api/actuator/health
+      #            initialDelaySeconds: 15
+      #            periodSeconds: 30
+      #          readinessProbe:
+      #            httpGet:
+      #              port: 8080
+      #              path: /excellence-nettoyage/api/actuator/health
+      #            initialDelaySeconds: 10
+      #            periodSeconds: 15
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
 ---
@@ -68,8 +74,12 @@ kind: Service
 metadata:
   labels:
     app: excellence-nettoyage-api
-  name: excellence-nettoyage-api
+  name: ena-service
   namespace: default
+  annotations:
+    #Healcheck issue (3 days wasted),  I've created a custom healthcheck because of the type of loadbalancer (Application (Classic))
+    #check more: https://cloud.google.com/kubernetes-engine/docs/how-to/ingress-configuration#direct_health
+    cloud.google.com/backend-config: '{"default": "ena-backend-config"}'
 spec:
   ports:
     - port: 8000 #external port

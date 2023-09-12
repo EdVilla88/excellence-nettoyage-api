@@ -1,6 +1,6 @@
 package com.villacamp.hn.excellence.configuration;
 
-import com.villacamp.hn.excellence.filter.JwtAuthenticationFilter;
+import com.villacamp.hn.excellence.filter.JWTAuthenticationFilter;
 import com.villacamp.hn.excellence.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +25,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JWTAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
     @Value("${server.servlet.context-path}")
     private String contextPath;

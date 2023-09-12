@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-specific-ip
+spec:
+  podSelector: { } # Targets all pods in the namespace
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - ipBlock:
+            cidr: 131.108.233.163 # Replace with the specific IP address
+
+#This is when you want to grant access to specific whitelisted ip and more.
+
+#NOT BEING USED ATM
