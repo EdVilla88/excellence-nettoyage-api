@@ -1,7 +1,12 @@
 package com.villacamp.hn.excellence.dto.request;
 
 import jakarta.validation.constraints.Email;
-import lombok.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -10,6 +15,7 @@ import lombok.*;
 public class SignInDTO {
     @Email
     private String email;
-    @NonNull
+    @NotNull
+    @NotEmpty
     private String password;
 }
