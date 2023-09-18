@@ -1,4 +1,4 @@
-package com.villacamp.hn.excellence.dto.response;
+package com.villacamp.hn.excellence.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

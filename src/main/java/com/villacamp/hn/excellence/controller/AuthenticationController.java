@@ -1,8 +1,8 @@
 package com.villacamp.hn.excellence.controller;
 
-import com.villacamp.hn.excellence.dto.request.SignInDTO;
-import com.villacamp.hn.excellence.dto.request.SignUpDTO;
-import com.villacamp.hn.excellence.dto.response.JwtAuthenticationDTO;
+import com.villacamp.hn.excellence.dto.JwtAuthenticationDTO;
+import com.villacamp.hn.excellence.dto.SignInDTO;
+import com.villacamp.hn.excellence.dto.SignUpDTO;
 import com.villacamp.hn.excellence.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

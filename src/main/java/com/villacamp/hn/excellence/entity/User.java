@@ -12,31 +12,30 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "App_User")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
     private String email;
     private String password;
     private String address;
     private String latitude;
     private String longitude;
-    @Column(name = "phone_number")
     private String phoneNumber;
-    @Column(name = "created_at")
-    private LocalDateTime created;
-    @Column(name = "updated_at")
+    private LocalDateTime created = LocalDateTime.now();
     private LocalDateTime updated;
+    @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Job> jobs;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -55,21 +54,25 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
+        //ToDo
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
+        //ToDo
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
+        //ToDo
         return true;
     }
 
     @Override
     public boolean isEnabled() {
+        //ToDo
         return true;
     }
 }

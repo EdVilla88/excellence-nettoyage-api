@@ -1,6 +1,7 @@
 package com.villacamp.hn.excellence.exception;
 
 import com.villacamp.hn.excellence.model.ApiError;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -26,5 +27,32 @@ public class GlobalExceptionHandler {
                         .timeStamp(LocalDateTime.now())
                         .build(),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiError> handleNoFoundException(NotFoundException ex, WebRequest webRequest) {
+        var servletWebRequest = (ServletWebRequest) webRequest;
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .message(ex.getMessage())
+                        .path(servletWebRequest.getRequest().getServletPath())
+                        .timeStamp(LocalDateTime.now())
+                        .build(),
+                HttpStatus.NOT_FOUND);
+    }
+
+    //ToDo fix this expired exception when extracting claims
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ApiError> handleExpiredJwtException(ExpiredJwtException ex, WebRequest webRequest) {
+        var servletWebRequest = (ServletWebRequest) webRequest;
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .message(ex.getMessage())
+                        .path(servletWebRequest.getRequest().getServletPath())
+                        .timeStamp(LocalDateTime.now())
+                        .build(),
+                HttpStatus.FORBIDDEN);
     }
 }

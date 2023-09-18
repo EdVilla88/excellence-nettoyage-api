@@ -27,7 +27,7 @@ public class OpenAPIConfig {
                 .title("Excellence Nettoyage")
                 .version("v0.0.7")
                 .contact(contact)
-                .description("Excellence's API");
+                .description("API");
 
         return new OpenAPI()
                 .info(info);

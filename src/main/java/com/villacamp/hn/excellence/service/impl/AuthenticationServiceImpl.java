@@ -1,8 +1,8 @@
 package com.villacamp.hn.excellence.service.impl;
 
-import com.villacamp.hn.excellence.dto.request.SignInDTO;
-import com.villacamp.hn.excellence.dto.request.SignUpDTO;
-import com.villacamp.hn.excellence.dto.response.JwtAuthenticationDTO;
+import com.villacamp.hn.excellence.dto.JwtAuthenticationDTO;
+import com.villacamp.hn.excellence.dto.SignInDTO;
+import com.villacamp.hn.excellence.dto.SignUpDTO;
 import com.villacamp.hn.excellence.entity.User;
 import com.villacamp.hn.excellence.repository.UserRepository;
 import com.villacamp.hn.excellence.service.AuthenticationService;
@@ -35,7 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phoneNumber(request.getPhone())
                 .created(LocalDateTime.now())
-                .role(Role.USER).build();
+                .role(Role.USR).build();
         userRepository.save(user);
 
         return JwtAuthenticationDTO.builder()

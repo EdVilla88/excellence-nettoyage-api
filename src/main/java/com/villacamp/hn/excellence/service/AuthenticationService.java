@@ -1,8 +1,8 @@
 package com.villacamp.hn.excellence.service;
 
-import com.villacamp.hn.excellence.dto.request.SignInDTO;
-import com.villacamp.hn.excellence.dto.request.SignUpDTO;
-import com.villacamp.hn.excellence.dto.response.JwtAuthenticationDTO;
+import com.villacamp.hn.excellence.dto.JwtAuthenticationDTO;
+import com.villacamp.hn.excellence.dto.SignInDTO;
+import com.villacamp.hn.excellence.dto.SignUpDTO;
 
 public interface AuthenticationService {
 
