@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "App_User")
+@Table(name = "App_User", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 public class User implements UserDetails {
 
     @Id
@@ -34,8 +34,6 @@ public class User implements UserDetails {
     private LocalDateTime updated;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Job> jobs;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

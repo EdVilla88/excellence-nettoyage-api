@@ -2,6 +2,7 @@ package com.villacamp.hn.excellence.exception;
 
 import com.villacamp.hn.excellence.model.ApiError;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,6 +37,32 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
                 ApiError.builder()
                         .message(ex.getMessage())
+                        .path(servletWebRequest.getRequest().getServletPath())
+                        .timeStamp(LocalDateTime.now())
+                        .build(),
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidLoginException.class)
+    public ResponseEntity<ApiError> handleInvalidLoginException(InvalidLoginException ex, WebRequest webRequest) {
+        var servletWebRequest = (ServletWebRequest) webRequest;
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .message(ex.getMessage())
+                        .path(servletWebRequest.getRequest().getServletPath())
+                        .timeStamp(LocalDateTime.now())
+                        .build(),
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(PSQLException.class)
+    public ResponseEntity<ApiError> handlePSQLException(PSQLException ex, WebRequest webRequest) {
+        var servletWebRequest = (ServletWebRequest) webRequest;
+        return new ResponseEntity<>(
+                ApiError.builder()
+                        .message(ex.getMessage().split("Detail: ")[1])
                         .path(servletWebRequest.getRequest().getServletPath())
                         .timeStamp(LocalDateTime.now())
                         .build(),

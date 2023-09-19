@@ -6,7 +6,7 @@ import com.villacamp.hn.excellence.dto.SignUpDTO;
 
 public interface AuthenticationService {
 
-    JwtAuthenticationDTO signUp(SignUpDTO request);
+    JwtAuthenticationDTO signUpClient(SignUpDTO request);
 
-    JwtAuthenticationDTO signIn(SignInDTO request);
+    JwtAuthenticationDTO signInClient(SignInDTO request);
 }

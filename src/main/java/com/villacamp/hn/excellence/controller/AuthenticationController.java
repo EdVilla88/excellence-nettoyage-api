@@ -26,12 +26,12 @@ public class AuthenticationController {
     @PostMapping("/sign-up")
     @Operation(summary = "Sign up with a new email and password.")
     public ResponseEntity<JwtAuthenticationDTO> signUp(@Valid @RequestBody SignUpDTO request) {
-        return ResponseEntity.ok(authenticationService.signUp(request));
+        return ResponseEntity.ok(authenticationService.signUpClient(request));
     }
 
     @PostMapping("/sign-in")
     @Operation(summary = "Sign in with an email and password.")
     public ResponseEntity<JwtAuthenticationDTO> signIn(@Valid @RequestBody SignInDTO request) {
-        return ResponseEntity.ok(authenticationService.signIn(request));
+        return ResponseEntity.ok(authenticationService.signInClient(request));
     }
 }

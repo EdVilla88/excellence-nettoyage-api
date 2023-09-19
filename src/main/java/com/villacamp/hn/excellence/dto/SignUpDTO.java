@@ -25,8 +25,6 @@ public class SignUpDTO {
     @NotEmpty
     @Schema(description = "Account's password", example = "test123!")
     private String password;
-    @NotNull
-    @NotEmpty
     @Schema(description = "User's phone number with region code", example = "+50411111111")
     private String phone;
 }

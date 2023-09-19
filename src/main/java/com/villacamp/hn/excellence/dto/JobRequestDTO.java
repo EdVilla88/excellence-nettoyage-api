@@ -26,4 +26,7 @@ public class JobRequestDTO {
     @NotNull(message = "price cannot be null")
     @Schema(description = "Job's price", example = "99.99")
     private BigDecimal price;
+    @NotNull(message = "userId cannot be null")
+    @Schema(description = "User's id", example = "9")
+    private long userId;
 }
