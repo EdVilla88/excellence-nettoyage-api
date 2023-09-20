@@ -27,19 +27,21 @@ public class JobController {
 
     @GetMapping
     @Operation(summary = "Get current jobs")
+    @PreAuthorize("hasRole('CLI')")
     public ResponseEntity<List<JobDTO>> allJobs() {
         return ResponseEntity.ok(jobService.findJobs());
     }
 
     @PostMapping
     @Operation(summary = "Insert new job")
-//    @PreAuthorize("hasRole('ADM')")
+    @PreAuthorize("hasRole('ADM')")
     public ResponseEntity<UpsertDTO> insertJob(Authentication authentication, @Valid @RequestBody JobRequestDTO request) {
         return ResponseEntity.ok(jobService.insertJob((User) authentication.getPrincipal(), request));
     }
 
     @PutMapping
     @Operation(summary = "Update a job")
+    @PreAuthorize("hasRole('ADM')")
     public ResponseEntity<UpsertDTO> updateJob(Authentication authentication, @Valid @RequestBody JobUpdateDTO request) {
         return ResponseEntity.ok(jobService.updateJob((User) authentication.getPrincipal(), request));
     }
@@ -47,7 +49,7 @@ public class JobController {
     @DeleteMapping
     @Operation(summary = "Delete a job")
     @PreAuthorize("hasRole('ADM')")
-    public ResponseEntity<Boolean> deleteJob(Authentication authentication, @RequestParam int id) {
+    public ResponseEntity<Boolean> deleteJob(Authentication authentication, @RequestParam long id) {
         return ResponseEntity.ok(jobService.deleteJob((User) authentication.getPrincipal(), id));
     }
 }

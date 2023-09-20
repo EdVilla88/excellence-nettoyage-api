@@ -1,5 +1,7 @@
 package com.villacamp.hn.excellence.dto;
 
+import com.villacamp.hn.excellence.utils.annotation.ExcludeAdmin;
+import com.villacamp.hn.excellence.utils.enums.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -27,4 +29,7 @@ public class SignUpDTO {
     private String password;
     @Schema(description = "User's phone number with region code", example = "+50411111111")
     private String phone;
+    @NotNull(message = "Role must not be null")
+    @ExcludeAdmin
+    private Role role;
 }

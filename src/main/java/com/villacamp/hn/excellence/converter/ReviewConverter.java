@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 @NoArgsConstructor
-public class ReviewConverter {
+public final class ReviewConverter {
     public static ReviewDTO convert(Review entity) {
         return new ModelMapper().map(entity, ReviewDTO.class);
     }

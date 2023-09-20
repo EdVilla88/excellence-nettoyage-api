@@ -4,11 +4,9 @@ import com.villacamp.hn.excellence.dto.JwtAuthenticationDTO;
 import com.villacamp.hn.excellence.dto.SignInDTO;
 import com.villacamp.hn.excellence.dto.SignUpDTO;
 import com.villacamp.hn.excellence.entity.User;
-import com.villacamp.hn.excellence.exception.InvalidLoginException;
 import com.villacamp.hn.excellence.repository.UserRepository;
 import com.villacamp.hn.excellence.service.AuthenticationService;
 import com.villacamp.hn.excellence.service.JwtService;
-import com.villacamp.hn.excellence.utils.enums.Role;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,7 +34,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phoneNumber(request.getPhone())
                 .created(LocalDateTime.now())
-                .role(Role.CLI).build();
+                .role(request.getRole())
+                .build();
         userRepository.save(user);
 
         return JwtAuthenticationDTO.builder()
@@ -53,9 +52,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
         var user = userRepository.findUserByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
-
-        if (user.getRole().equals(Role.EMP))
-            throw new InvalidLoginException("Credentials are from an employee account.");
 
         return JwtAuthenticationDTO.builder()
                 .token(jwtService.generateToken(user))
