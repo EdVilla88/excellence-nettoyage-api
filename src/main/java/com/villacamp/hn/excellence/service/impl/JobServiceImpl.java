@@ -72,7 +72,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public boolean deleteJob(User user, long id) {
+    public boolean deleteJob(long id) {
         repository.delete(findJob(id));
         return true;
     }

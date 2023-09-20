@@ -1,5 +1,6 @@
 package com.villacamp.hn.excellence.entity;
 
+import com.villacamp.hn.excellence.utils.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +21,12 @@ public class Booking {
     private Address address;
     @OneToOne
     private Job job;
-    private LocalDateTime dateTime;
+    private LocalDateTime bookedDateTime;
     private int locationSize;
     private int rooms;
     private String phone;
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
+    private LocalDateTime completionDate;
+    private LocalDateTime created = LocalDateTime.now();
 }

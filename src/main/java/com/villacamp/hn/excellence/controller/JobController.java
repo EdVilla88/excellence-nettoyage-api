@@ -49,7 +49,7 @@ public class JobController {
     @DeleteMapping
     @Operation(summary = "Delete a job")
     @PreAuthorize("hasRole('ADM')")
-    public ResponseEntity<Boolean> deleteJob(Authentication authentication, @RequestParam long id) {
-        return ResponseEntity.ok(jobService.deleteJob((User) authentication.getPrincipal(), id));
+    public ResponseEntity<Boolean> deleteJob(@RequestParam long id) {
+        return ResponseEntity.ok(jobService.deleteJob(id));
     }
 }

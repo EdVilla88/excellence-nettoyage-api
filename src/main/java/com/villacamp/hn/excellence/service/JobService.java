@@ -16,5 +16,5 @@ public interface JobService {
 
     UpsertDTO updateJob(User user, JobUpdateDTO update);
 
-    boolean deleteJob(User user, long id);
+    boolean deleteJob(long id);
 }
