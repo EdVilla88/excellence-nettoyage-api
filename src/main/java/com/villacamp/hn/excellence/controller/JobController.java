@@ -27,7 +27,7 @@ public class JobController {
 
     @GetMapping
     @Operation(summary = "Get current jobs")
-    @PreAuthorize("hasRole('CLI')")
+    @PreAuthorize("hasRole('CLI, ADM')")
     public ResponseEntity<List<JobDTO>> allJobs() {
         return ResponseEntity.ok(jobService.findJobs());
     }
