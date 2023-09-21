@@ -25,7 +25,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressDTO> findAll(User user) {
-        return repository.findAllByClient(user)
+        return repository.findAllByUser(user)
                 .orElseThrow(() -> new NotFoundException("No addresses for this user."))
                 .stream()
                 .map(AddressConverter::convert)
@@ -39,7 +39,7 @@ public class AddressServiceImpl implements AddressService {
                         .address(request.getAddress())
                         .name(request.getName())
                         .description(request.getDescription())
-                        .client(user)
+                        .user(user)
                         .build());
         return UpsertDTO.builder()
                 .success(entity.getId() > 0)
@@ -52,7 +52,7 @@ public class AddressServiceImpl implements AddressService {
         var entity = repository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Invalid address id"));
 
-        if (!Objects.equals(entity.getClient().getId(), user.getId()))
+        if (!Objects.equals(entity.getUser().getId(), user.getId()))
             return UpsertDTO.builder()
                     .success(false)
                     .msg("Address not found for current user.")
@@ -71,7 +71,7 @@ public class AddressServiceImpl implements AddressService {
         var entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Invalid address id."));
 
-        if (!Objects.equals(entity.getClient().getId(), user.getId()))
+        if (!Objects.equals(entity.getUser().getId(), user.getId()))
             return false;
         repository.delete(entity);
         return true;

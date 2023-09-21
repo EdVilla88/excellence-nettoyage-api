@@ -31,9 +31,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDTO> findAll(User user) {
-        return repository.findAll(user)
-                .orElseThrow(() -> new NotFoundException("Empty booking"))
+        return repository.findAll()
                 .stream()
+                .filter(b -> Objects.equals(b.getAddress().getUser().getId(), user.getId()))
                 .map(BookingConverter::convert)
                 .collect(Collectors.toList());
     }
@@ -46,7 +46,7 @@ public class BookingServiceImpl implements BookingService {
                                 .orElseThrow(() -> new NotFoundException("Invalid job id.")))
                         .bookedDateTime(request.getBookedDateTime())
                         .phone(request.getPhone())
-                        .address(addressRepository.findByIdAndClient(request.getAddressId(), user)
+                        .address(addressRepository.findByIdAndUser(request.getAddressId(), user)
                                 .orElseThrow(() -> new NotFoundException(("Invalid address id."))))
                         .locationSize(request.getLocationSize())
                         .rooms(request.getRooms())
@@ -63,12 +63,12 @@ public class BookingServiceImpl implements BookingService {
         var entity = repository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Invalid booking id."));
 
-        if (!Objects.equals(entity.getAddress().getClient().getId(), user.getId()))
+        if (!Objects.equals(entity.getAddress().getUser().getId(), user.getId()))
             return UpsertDTO.builder()
                     .success(false)
                     .msg("Invalid booking for current user.")
                     .build();
-        entity.setAddress(addressRepository.findByIdAndClient(request.getAddressId(), user)
+        entity.setAddress(addressRepository.findByIdAndUser(request.getAddressId(), user)
                 .orElseThrow(() -> new NotFoundException("Invalid address id.")));
         entity.setJob((jobRepository.findById(request.getJobId())
                 .orElseThrow(() -> new NotFoundException("Invalid job id."))));
@@ -88,7 +88,7 @@ public class BookingServiceImpl implements BookingService {
         var entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Invalid booking id."));
 
-        if (!Objects.equals(entity.getAddress().getClient().getId(), user.getId()))
+        if (!Objects.equals(entity.getAddress().getUser().getId(), user.getId()))
             return false;
         repository.delete(entity);
         return true;
@@ -99,7 +99,7 @@ public class BookingServiceImpl implements BookingService {
         var entity = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Invalid booking id."));
 
-        if (!Objects.equals(entity.getAddress().getClient().getId(), user.getId()))
+        if (!Objects.equals(entity.getAddress().getUser().getId(), user.getId()))
             throw new NotFoundException("Booking does not exist in current user.");
         else if (status.equals(BookingStatus.COM))
             entity.setCompletionDate(LocalDateTime.now());

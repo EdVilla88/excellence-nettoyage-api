@@ -1,7 +1,7 @@
 package com.villacamp.hn.excellence.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,20 +15,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookingRequestDTO {
-    @NotEmpty(message = "address cannot be empty")
-    @Schema(description = "Address name", example = "Office")
+    @Schema(description = "Address id", example = "1")
     private long addressId;
-    @NotEmpty(message = "address cannot be empty")
-    @Schema(description = "Address name", example = "Office")
+    @Schema(description = "Job's id", example = "1")
     private long jobId;
-    @Schema(description = "Address name", example = "Office")
-    @NotEmpty(message = "address cannot be empty")
-    @NotNull(message = "address cannot be null")
+    @Future
+    @Schema(description = "Job's booked date and time.", example = "2024-09-21T00:17:53.792Z")
+    @NotNull(message = "bookedDateTime cannot be null")
     private LocalDateTime bookedDateTime;
-    @Schema(description = "Address name", example = "Office")
+    @Schema(description = "Entire location size sq/ft", example = "2000")
     private int locationSize;
-    @Schema(description = "Address name", example = "Office")
+    @Schema(description = "Location number of rooms", example = "4")
     private int rooms;
-    @Schema(description = "Address name", example = "Office")
+    @Schema(description = "Client phone", example = "+540113123698")
     private String phone;
 }

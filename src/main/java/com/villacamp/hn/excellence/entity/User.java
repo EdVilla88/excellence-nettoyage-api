@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private String phoneNumber;
     private LocalDateTime created = LocalDateTime.now();
     private LocalDateTime updated;
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses;
     @Enumerated(EnumType.STRING)
     private Role role;

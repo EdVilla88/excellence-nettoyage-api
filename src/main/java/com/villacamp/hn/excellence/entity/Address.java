@@ -3,6 +3,8 @@ package com.villacamp.hn.excellence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -17,6 +19,8 @@ public class Address {
     private String description;
     private String address;
     @ManyToOne
-    @JoinColumn(name = "client_id")
-    private User client;
+    @JoinColumn(name = "user_id")
+    private User user;
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking> bookings;
 }

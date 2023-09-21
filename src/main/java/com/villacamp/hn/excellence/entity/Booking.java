@@ -17,9 +17,11 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "address_id")
     private Address address;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "job_id")
     private Job job;
     private LocalDateTime bookedDateTime;
     private int locationSize;
